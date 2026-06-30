@@ -1,9 +1,5 @@
-const Home = () => {
-  return (
-    <div className="text-4xl font-bold text-center py-20">
-      blog Page
-    </div>
-  );
+const Blog = () => {
+  return <h1>Blog Page</h1>;
 };
 
-export default Home;
+export default Blog;

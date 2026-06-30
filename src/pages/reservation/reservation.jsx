@@ -1,9 +1,5 @@
-const Home = () => {
-  return (
-    <div className="text-4xl font-bold text-center py-20">
-      Reservation Page
-    </div>
-  );
+const Reservation = () => {
+  return <h1>Reservation Page</h1>;
 };
 
-export default Home;
+export default Reservation;
