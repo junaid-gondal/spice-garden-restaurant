@@ -7,6 +7,7 @@ import Menu from "../pages/Menu/Menu";
 import About from "../pages/About/About";
 import Gallery from "../pages/Gallery/Gallery";
 import Blog from "../pages/Blog/Blog";
+import SingleBlog from "../pages/SingleBlog/SingleBlog";
 import Contact from "../pages/Contact/Contact";
 import Reservation from "../pages/Reservation/Reservation";
 import NotFound from "../pages/NotFound/NotFound";
@@ -21,6 +22,7 @@ const AppRoutes = () => {
           <Route path="/about" element={<About />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<SingleBlog />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/reservation" element={<Reservation />} />
         </Route>
