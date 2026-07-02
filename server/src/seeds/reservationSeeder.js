@@ -1,0 +1,428 @@
+const mongoose = require("mongoose");
+const Reservation = require("../models/Reservation");
+require("dotenv").config({ path: require("path").resolve(__dirname, "../../.env") });
+
+const reservations = [
+  // Pending Reservations
+  {
+    fullName: "Ahmed Hassan",
+    email: "ahmed.hassan@email.com",
+    phone: "03001234567",
+    guests: 4,
+    reservationDate: new Date("2026-07-05"),
+    reservationTime: "7:00 PM",
+    occasion: "Family Dinner",
+    specialRequests: "Window seat if possible",
+    tableNumber: 5,
+    status: "Pending",
+  },
+  {
+    fullName: "Sarah Khan",
+    email: "sarah.khan@email.com",
+    phone: "03011234567",
+    guests: 2,
+    reservationDate: new Date("2026-07-06"),
+    reservationTime: "8:00 PM",
+    occasion: "Romantic Dinner",
+    specialRequests: "Private corner table, birthday cake arrangement",
+    tableNumber: 1,
+    status: "Pending",
+  },
+  {
+    fullName: "Fatima Ali",
+    email: "fatima.ali@email.com",
+    phone: "03021234567",
+    guests: 6,
+    reservationDate: new Date("2026-07-07"),
+    reservationTime: "7:30 PM",
+    occasion: "Birthday",
+    specialRequests: "Need high chair for baby",
+    tableNumber: 11,
+    status: "Pending",
+  },
+  {
+    fullName: "Usman Malik",
+    email: "usman.malik@email.com",
+    phone: "03031234567",
+    guests: 8,
+    reservationDate: new Date("2026-07-08"),
+    reservationTime: "6:00 PM",
+    occasion: "Business Meeting",
+    specialRequests: "Quiet area for business discussion",
+    tableNumber: 15,
+    status: "Pending",
+  },
+  {
+    fullName: "Ayesha Siddiqui",
+    email: "ayesha.siddiqui@email.com",
+    phone: "03041234567",
+    guests: 4,
+    reservationDate: new Date("2026-07-09"),
+    reservationTime: "7:00 PM",
+    occasion: "Anniversary",
+    specialRequests: "Celebrating 5th anniversary, need romantic setup",
+    tableNumber: 6,
+    status: "Pending",
+  },
+
+  // Confirmed Reservations
+  {
+    fullName: "Muhammad Asif",
+    email: "muhammad.asif@email.com",
+    phone: "03051234567",
+    guests: 3,
+    reservationDate: new Date("2026-07-10"),
+    reservationTime: "8:30 PM",
+    occasion: "Family Dinner",
+    specialRequests: "No spicy food for one guest",
+    tableNumber: 5,
+    status: "Confirmed",
+  },
+  {
+    fullName: "Hina Iqbal",
+    email: "hina.iqbal@email.com",
+    phone: "03061234567",
+    guests: 2,
+    reservationDate: new Date("2026-07-11"),
+    reservationTime: "7:00 PM",
+    occasion: "Romantic Dinner",
+    specialRequests: "",
+    tableNumber: 2,
+    status: "Confirmed",
+  },
+  {
+    fullName: "Zain Abbas",
+    email: "zain.abbas@email.com",
+    phone: "03071234567",
+    guests: 5,
+    reservationDate: new Date("2026-07-12"),
+    reservationTime: "6:30 PM",
+    occasion: "Graduation",
+    specialRequests: "Celebrating graduation, need special dessert",
+    tableNumber: 9,
+    status: "Confirmed",
+  },
+  {
+    fullName: "Maryam Raza",
+    email: "maryam.raza@email.com",
+    phone: "03081234567",
+    guests: 8,
+    reservationDate: new Date("2026-07-13"),
+    reservationTime: "7:30 PM",
+    occasion: "Celebration",
+    specialRequests: "Large table for family gathering",
+    tableNumber: 16,
+    status: "Confirmed",
+  },
+  {
+    fullName: "Ali Raza",
+    email: "ali.raza@email.com",
+    phone: "03091234567",
+    guests: 4,
+    reservationDate: new Date("2026-07-14"),
+    reservationTime: "8:00 PM",
+    occasion: "Birthday",
+    specialRequests: "Birthday cake arrangement needed",
+    tableNumber: 7,
+    status: "Confirmed",
+  },
+  {
+    fullName: "Sana Tariq",
+    email: "sana.tariq@email.com",
+    phone: "03101234567",
+    guests: 6,
+    reservationDate: new Date("2026-07-15"),
+    reservationTime: "7:00 PM",
+    occasion: "Family Dinner",
+    specialRequests: "Vegetarian options preferred",
+    tableNumber: 12,
+    status: "Confirmed",
+  },
+  {
+    fullName: "Hassan Ahmed",
+    email: "hassan.ahmed@email.com",
+    phone: "03111234567",
+    guests: 2,
+    reservationDate: new Date("2026-07-16"),
+    reservationTime: "8:30 PM",
+    occasion: "Anniversary",
+    specialRequests: "10th anniversary celebration",
+    tableNumber: 3,
+    status: "Confirmed",
+  },
+  {
+    fullName: "Rabia Hussain",
+    email: "rabia.hussain@email.com",
+    phone: "03121234567",
+    guests: 7,
+    reservationDate: new Date("2026-07-17"),
+    reservationTime: "6:00 PM",
+    occasion: "Family Dinner",
+    specialRequests: "",
+    tableNumber: 13,
+    status: "Confirmed",
+  },
+
+  // Completed Reservations
+  {
+    fullName: "Bilal Sheikh",
+    email: "bilal.sheikh@email.com",
+    phone: "03131234567",
+    guests: 4,
+    reservationDate: new Date("2026-07-20"),
+    reservationTime: "7:00 PM",
+    occasion: "Business Meeting",
+    specialRequests: "Need projector for presentation",
+    tableNumber: 8,
+    status: "Completed",
+    notes: "Great service, client was happy",
+  },
+  {
+    fullName: "Nadia Akram",
+    email: "nadia.akram@email.com",
+    phone: "03141234567",
+    guests: 2,
+    reservationDate: new Date("2026-07-21"),
+    reservationTime: "8:00 PM",
+    occasion: "Romantic Dinner",
+    specialRequests: "Proposal setup needed",
+    tableNumber: 1,
+    status: "Completed",
+    notes: "Successful proposal, couple was delighted",
+  },
+  {
+    fullName: "Kamran Ali",
+    email: "kamran.ali@email.com",
+    phone: "03151234567",
+    guests: 6,
+    reservationDate: new Date("2026-07-22"),
+    reservationTime: "7:30 PM",
+    occasion: "Birthday",
+    specialRequests: "",
+    tableNumber: 11,
+    status: "Completed",
+  },
+  {
+    fullName: "Amina Saleem",
+    email: "amina.saleem@email.com",
+    phone: "03161234567",
+    guests: 8,
+    reservationDate: new Date("2026-07-23"),
+    reservationTime: "6:30 PM",
+    occasion: "Family Dinner",
+    specialRequests: "Celebrating parents' anniversary",
+    tableNumber: 17,
+    status: "Completed",
+  },
+  {
+    fullName: "Faisal Khan",
+    email: "faisal.khan@email.com",
+    phone: "03171234567",
+    guests: 3,
+    reservationDate: new Date("2026-07-24"),
+    reservationTime: "8:00 PM",
+    occasion: "Celebration",
+    specialRequests: "",
+    tableNumber: 5,
+    status: "Completed",
+  },
+  {
+    fullName: "Saima Nawaz",
+    email: "saima.nawaz@email.com",
+    phone: "03181234567",
+    guests: 5,
+    reservationDate: new Date("2026-07-25"),
+    reservationTime: "7:00 PM",
+    occasion: "Graduation",
+    specialRequests: "Need photo area for group pictures",
+    tableNumber: 10,
+    status: "Completed",
+  },
+  {
+    fullName: "Imran Yousaf",
+    email: "imran.yousaf@email.com",
+    phone: "03191234567",
+    guests: 4,
+    reservationDate: new Date("2026-07-26"),
+    reservationTime: "7:30 PM",
+    occasion: "Anniversary",
+    specialRequests: "",
+    tableNumber: 6,
+    status: "Completed",
+  },
+
+  // Cancelled Reservations
+  {
+    fullName: "Zoya Ahmad",
+    email: "zoya.ahmad@email.com",
+    phone: "03201234567",
+    guests: 2,
+    reservationDate: new Date("2026-07-18"),
+    reservationTime: "8:00 PM",
+    occasion: "Romantic Dinner",
+    specialRequests: "Window seat preferred",
+    tableNumber: 2,
+    status: "Cancelled",
+    notes: "Customer requested cancellation due to change in plans",
+  },
+  {
+    fullName: "Omer Farooq",
+    email: "omer.farooq@email.com",
+    phone: "03211234567",
+    guests: 6,
+    reservationDate: new Date("2026-07-19"),
+    reservationTime: "7:00 PM",
+    occasion: "Family Dinner",
+    specialRequests: "",
+    tableNumber: 14,
+    status: "Cancelled",
+    notes: "Family emergency",
+  },
+  {
+    fullName: "Mahnoor Baig",
+    email: "mahnoor.baig@email.com",
+    phone: "03221234567",
+    guests: 4,
+    reservationDate: new Date("2026-07-20"),
+    reservationTime: "6:30 PM",
+    occasion: "Birthday",
+    specialRequests: "Birthday decorations needed",
+    tableNumber: 7,
+    status: "Cancelled",
+    notes: "Rescheduling to next week",
+  },
+
+  // Rejected Reservations
+  {
+    fullName: "Waqas Hussain",
+    email: "waqas.hussain@email.com",
+    phone: "03231234567",
+    guests: 15,
+    reservationDate: new Date("2026-07-21"),
+    reservationTime: "7:00 PM",
+    occasion: "Family Dinner",
+    specialRequests: "Large group booking",
+    tableNumber: null,
+    status: "Rejected",
+    notes: "Group size exceeds maximum capacity per table",
+  },
+  {
+    fullName: "Saba Malik",
+    email: "saba.malik@email.com",
+    phone: "03241234567",
+    guests: 12,
+    reservationDate: new Date("2026-07-22"),
+    reservationTime: "8:00 PM",
+    occasion: "Business Meeting",
+    specialRequests: "Need private room",
+    tableNumber: null,
+    status: "Rejected",
+    notes: "No availability for large groups at requested time",
+  },
+
+  // No Show Reservations
+  {
+    fullName: "Talha Babar",
+    email: "talha.babar@email.com",
+    phone: "03251234567",
+    guests: 4,
+    reservationDate: new Date("2026-07-27"),
+    reservationTime: "7:00 PM",
+    occasion: "Family Dinner",
+    specialRequests: "",
+    tableNumber: 8,
+    status: "No Show",
+    notes: "Customer did not show up and did not call to cancel",
+  },
+  {
+    fullName: "Samina Riaz",
+    email: "samina.riaz@email.com",
+    phone: "03261234567",
+    guests: 2,
+    reservationDate: new Date("2026-07-28"),
+    reservationTime: "8:30 PM",
+    occasion: "Romantic Dinner",
+    specialRequests: "Anniversary celebration",
+    tableNumber: 3,
+    status: "No Show",
+    notes: "No show, table held for 30 minutes",
+  },
+  {
+    fullName: "Junaid Akhtar",
+    email: "junaid.akhtar@email.com",
+    phone: "03271234567",
+    guests: 6,
+    reservationDate: new Date("2026-07-29"),
+    reservationTime: "7:30 PM",
+    occasion: "Birthday",
+    specialRequests: "",
+    tableNumber: 12,
+    status: "No Show",
+    notes: "Customer did not arrive",
+  },
+
+  // Additional Confirmed for variety
+  {
+    fullName: "Fahad Saeed",
+    email: "fahad.saeed@email.com",
+    phone: "03281234567",
+    guests: 8,
+    reservationDate: new Date("2026-07-23"),
+    reservationTime: "6:00 PM",
+    occasion: "Celebration",
+    specialRequests: "Need special menu for kids",
+    tableNumber: 18,
+    status: "Confirmed",
+  },
+  {
+    fullName: "Mehwish Aslam",
+    email: "mehwish.aslam@email.com",
+    phone: "03291234567",
+    guests: 4,
+    reservationDate: new Date("2026-07-24"),
+    reservationTime: "7:00 PM",
+    occasion: "Other",
+    specialRequests: "Reunion with old friends",
+    tableNumber: 9,
+    status: "Confirmed",
+  },
+];
+
+const seedReservations = async () => {
+  try {
+    // Connect to MongoDB
+    await mongoose.connect(process.env.MONGODB_URI);
+    console.log("MongoDB connected...");
+
+    // Clear existing reservations
+    await Reservation.deleteMany({});
+    console.log("Existing reservations cleared");
+
+    // Insert seed data (using create to trigger pre-save hooks for confirmationCode generation)
+    const createdReservations = await Reservation.create(reservations);
+    console.log(`${createdReservations.length} reservations created successfully`);
+
+    // Display some stats
+    const stats = await Reservation.aggregate([
+      {
+        $group: {
+          _id: "$status",
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+
+    console.log("\nReservation Statistics:");
+    stats.forEach((stat) => {
+      console.log(`${stat._id}: ${stat.count}`);
+    });
+
+    process.exit(0);
+  } catch (error) {
+    console.error("Error seeding reservations:", error);
+    process.exit(1);
+  }
+};
+
+// Run seeder
+seedReservations();

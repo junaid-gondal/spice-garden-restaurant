@@ -69,7 +69,16 @@ Required variables:
 npm run dev
 ```
 
-4. **Start production server**
+4. **Seed database (optional)**
+```bash
+# Seed menu items
+node src/seeds/menuSeeder.js
+
+# Seed reservations
+node src/seeds/reservationSeeder.js
+```
+
+5. **Start production server**
 ```bash
 npm start
 ```
@@ -95,12 +104,26 @@ DELETE /api/menu/:id          # Delete item (admin)
 
 ### Reservations
 ```
-GET    /api/reservations      # Get all reservations (admin)
-GET    /api/reservations/:id  # Get single reservation
-POST   /api/reservations      # Create reservation
-PUT    /api/reservations/:id  # Update reservation
-DELETE /api/reservations/:id  # Cancel reservation
+# Public Routes
+POST   /api/reservations                        # Create new reservation
+GET    /api/reservations/code/:confirmationCode # Get reservation by code
+
+# Admin Routes
+GET    /api/reservations                        # Get all reservations
+GET    /api/reservations/:id                    # Get single reservation
+PUT    /api/reservations/:id                    # Update reservation
+PATCH  /api/reservations/:id/status             # Update reservation status
+DELETE /api/reservations/:id                    # Delete reservation
 ```
+
+**Query Parameters for GET /api/reservations:**
+- `page` - Page number (default: 1)
+- `limit` - Items per page (default: 20, max: 100)
+- `sort` - Sort field (reservationDate, status, guests, createdAt)
+- `order` - Sort order (asc, desc)
+- `status` - Filter by status (Pending, Confirmed, Completed, Cancelled, Rejected, No Show)
+- `date` - Filter by specific date (ISO format)
+- `search` - Search by name, email, phone, or confirmation code
 
 ### Contact
 ```
@@ -163,10 +186,19 @@ Using Nodemailer for:
 - Available status
 
 ### Reservation
-- User details
-- Date, Time, Guests
-- Occasion, Special requests
-- Status (pending/confirmed/cancelled)
+- Full Name, Email, Phone
+- Guests (1-20), Date, Time
+- Occasion, Special Requests
+- Table Number (auto-assigned)
+- Status (Pending/Confirmed/Completed/Cancelled/Rejected/No Show)
+- Confirmation Code (auto-generated: SG-YYYY-XXXXXX)
+- Notes, Timestamps
+
+**Features:**
+- Automatic table assignment (20 tables with capacities: 2, 4, 6, 8 guests)
+- Double-booking prevention
+- Email notifications (confirmation, cancellation)
+- Confirmation code lookup
 
 ### Blog Post
 - Title, Slug, Content

@@ -1,4 +1,4 @@
-require("dotenv").config({ path: "../../.env" });
+require("dotenv").config();
 const mongoose = require("mongoose");
 const Menu = require("../models/Menu");
 const connectDB = require("../config/database");
@@ -326,8 +326,8 @@ const seedMenus = async () => {
     await Menu.deleteMany();
     console.log("✅ Existing menu data cleared");
 
-    // Insert new data
-    const menus = await Menu.insertMany(menuData);
+    // Insert new data (using create to trigger pre-save hooks for slug generation)
+    const menus = await Menu.create(menuData);
     console.log(`✅ ${menus.length} menu items added successfully`);
 
     process.exit(0);

@@ -10,7 +10,6 @@ const menuSchema = new mongoose.Schema(
     },
     slug: {
       type: String,
-      required: true,
       unique: true,
       lowercase: true,
     },
@@ -76,8 +75,8 @@ const menuSchema = new mongoose.Schema(
 );
 
 // Generate slug before saving
-menuSchema.pre("save", function (next) {
-  if (this.isModified("name")) {
+menuSchema.pre("save", async function() {
+  if (this.isNew || this.isModified("name")) {
     this.slug = this.name
       .toLowerCase()
       .replace(/[^\w\s-]/g, "")
@@ -85,7 +84,6 @@ menuSchema.pre("save", function (next) {
       .replace(/-+/g, "-")
       .trim();
   }
-  next();
 });
 
 // Index for search

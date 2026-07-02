@@ -31,7 +31,7 @@ app.get("/", (req, res) => {
 
 // API Routes
 app.use("/api/menu", require("./routes/menuRoutes"));
-// app.use("/api/reservations", require("./routes/reservationRoutes"));
+app.use("/api/reservations", require("./routes/reservationRoutes"));
 // app.use("/api/contact", require("./routes/contactRoutes"));
 // app.use("/api/blog", require("./routes/blogRoutes"));
 // app.use("/api/auth", require("./routes/authRoutes"));
