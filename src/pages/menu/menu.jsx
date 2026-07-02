@@ -1,11 +1,11 @@
 import { useState, useMemo } from "react";
-import { motion } from "framer-motion";
 import Container from "../../components/common/Container";
 import MenuHero from "../../components/sections/menu/MenuHero/MenuHero";
 import SearchBar from "../../components/sections/menu/SearchBar/SearchBar";
 import MenuFilters from "../../components/sections/menu/MenuFilters/MenuFilters";
 import MenuGrid from "../../components/sections/menu/MenuGrid/MenuGrid";
 import menuData from "../../data/menuData";
+import SEO from "../../components/common/SEO";
 
 const Menu = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -53,6 +53,11 @@ const Menu = () => {
 
   return (
     <>
+      <SEO
+        title="Our Menu | Spice Garden Restaurant"
+        description="Explore our diverse menu featuring Pakistani, Chinese, Italian, BBQ, Fast Food, Desserts and Drinks. Fresh ingredients, expert preparation."
+        keywords="menu, food menu, Pakistani dishes, Chinese food, Italian cuisine, BBQ, desserts"
+      />
       <MenuHero />
 
       <section className="py-16 bg-gray-50">
